@@ -1,0 +1,16 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { FarmEditContainer } from '@/components/farms/FarmEditContainer';
+
+const { id } = Astro.params;
+const farmId = Number(id);
+---
+
+<DashboardLayout
+  title="Editar finca"
+  pageTitle="Editar finca"
+  breadcrumbs={[{ label: 'Fincas', href: '/farms' }, { label: 'Editar' }]}
+  requiredPermission="FARMS_MANAGE"
+>
+  <FarmEditContainer client:load farmId={farmId} />
+</DashboardLayout>

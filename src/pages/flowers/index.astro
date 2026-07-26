@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { FlowersTable } from '@/components/flowers/FlowersTable';
+---
+
+<DashboardLayout
+  title="Flores y variedades"
+  pageTitle="Flores y variedades"
+  breadcrumbs={[{ label: 'Flores y variedades' }]}
+  requiredPermission="FLOWERS_VIEW"
+>
+  <FlowersTable client:load />
+</DashboardLayout>

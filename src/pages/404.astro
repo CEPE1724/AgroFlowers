@@ -1,0 +1,16 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { FullPageMessage } from '@/components/common/FullPageMessage';
+import { FileQuestion } from 'lucide-react';
+---
+
+<MainLayout title="Página no encontrada">
+  <FullPageMessage
+    client:load
+    icon={FileQuestion}
+    title="Página no encontrada"
+    description="La página que buscas no existe o fue movida. Verifica la URL o vuelve al dashboard."
+    actionLabel="Volver al dashboard"
+    actionHref="/dashboard"
+  />
+</MainLayout>

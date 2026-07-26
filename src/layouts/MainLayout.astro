@@ -1,0 +1,40 @@
+---
+import { AppToaster } from '@/components/common/AppToaster';
+import '@/styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Gestión inteligente de exportación de flores' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} · AgroFlowers AI</title>
+    <script is:inline>
+      (function initClientPreferences() {
+        try {
+          const theme =
+            localStorage.getItem('agroflowers_theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          const collapsed = localStorage.getItem('agroflowers_sidebar_collapsed') === 'true';
+          document.documentElement.dataset.sidebarCollapsed = String(collapsed);
+        } catch (error) {
+          console.warn('No se pudo leer las preferencias locales', error);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+    <AppToaster client:load />
+  </body>
+</html>

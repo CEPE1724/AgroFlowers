@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { FarmForm } from '@/components/farms/FarmForm';
+---
+
+<DashboardLayout
+  title="Nueva finca"
+  pageTitle="Nueva finca"
+  breadcrumbs={[{ label: 'Fincas', href: '/farms' }, { label: 'Nueva' }]}
+  requiredPermission="FARMS_MANAGE"
+>
+  <FarmForm client:load />
+</DashboardLayout>

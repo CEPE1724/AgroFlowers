@@ -1,0 +1,28 @@
+---
+import MainLayout from './MainLayout.astro';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { Topbar } from '@/components/layout/Topbar';
+import { AuthGuard } from '@/components/layout/AuthGuard';
+import type { PERMISSIONS } from '@/utils/permissions';
+
+interface Props {
+  title: string;
+  pageTitle?: string;
+  breadcrumbs?: { label: string; href?: string }[];
+  requiredPermission?: keyof typeof PERMISSIONS;
+}
+
+const { title, pageTitle, breadcrumbs = [], requiredPermission } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<MainLayout title={title}>
+  <AuthGuard client:load requiredPermission={requiredPermission} />
+  <Sidebar client:load currentPath={currentPath} />
+  <div class="dashboard-main min-h-screen">
+    <Topbar client:load title={pageTitle ?? title} breadcrumbs={breadcrumbs} />
+    <main class="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
+      <slot />
+    </main>
+  </div>
+</MainLayout>

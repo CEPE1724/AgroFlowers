@@ -1,0 +1,8 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { ProfileCard } from '@/components/auth/ProfileCard';
+---
+
+<DashboardLayout title="Mi perfil" pageTitle="Mi perfil" breadcrumbs={[{ label: 'Mi perfil' }]}>
+  <ProfileCard client:load />
+</DashboardLayout>

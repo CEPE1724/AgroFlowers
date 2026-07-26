@@ -1,0 +1,17 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { FullPageMessage } from '@/components/common/FullPageMessage';
+import { ShieldAlert } from 'lucide-react';
+---
+
+<MainLayout title="Acceso no autorizado">
+  <FullPageMessage
+    client:load
+    icon={ShieldAlert}
+    tone="danger"
+    title="No tienes permisos para ver esta página"
+    description="Tu rol actual no cuenta con acceso a este módulo. Si crees que esto es un error, contacta al administrador del sistema."
+    actionLabel="Volver al dashboard"
+    actionHref="/dashboard"
+  />
+</MainLayout>

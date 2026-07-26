@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { PurchasesTable } from '@/components/purchases/PurchasesTable';
+---
+
+<DashboardLayout
+  title="Compras"
+  pageTitle="Compras de flores"
+  breadcrumbs={[{ label: 'Compras' }]}
+  requiredPermission="PURCHASES_VIEW"
+>
+  <PurchasesTable client:load />
+</DashboardLayout>

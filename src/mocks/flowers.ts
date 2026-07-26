@@ -1,0 +1,48 @@
+import type { Flower } from '@/types/flower';
+
+export const mockFlowers: Flower[] = [
+  {
+    id: 1,
+    code: 'ROS-FRE-50',
+    flowerType: 'Rosa',
+    variety: 'Freedom',
+    color: 'Rojo',
+    stemLength: 50,
+    stemsPerBouquet: 25,
+    purchaseUnit: 'RAMO',
+    status: 'ACTIVE',
+  },
+  {
+    id: 2,
+    code: 'ROS-MON-60',
+    flowerType: 'Rosa',
+    variety: 'Mondial',
+    color: 'Blanco',
+    stemLength: 60,
+    stemsPerBouquet: 25,
+    purchaseUnit: 'RAMO',
+    status: 'ACTIVE',
+  },
+  {
+    id: 3,
+    code: 'ROS-EXP-50',
+    flowerType: 'Rosa',
+    variety: 'Explorer',
+    color: 'Rojo oscuro',
+    stemLength: 50,
+    stemsPerBouquet: 25,
+    purchaseUnit: 'RAMO',
+    status: 'ACTIVE',
+  },
+  {
+    id: 4,
+    code: 'GYP-MIL-70',
+    flowerType: 'Gypsophila',
+    variety: 'Million Stars',
+    color: 'Blanco',
+    stemLength: 70,
+    stemsPerBouquet: 10,
+    purchaseUnit: 'RAMO',
+    status: 'ACTIVE',
+  },
+];

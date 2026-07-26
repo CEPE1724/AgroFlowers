@@ -1,0 +1,16 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { FarmDetail } from '@/components/farms/FarmDetail';
+
+const { id } = Astro.params;
+const farmId = Number(id);
+---
+
+<DashboardLayout
+  title="Detalle de finca"
+  pageTitle="Detalle de finca"
+  breadcrumbs={[{ label: 'Fincas', href: '/farms' }, { label: 'Detalle' }]}
+  requiredPermission="FARMS_VIEW"
+>
+  <FarmDetail client:load farmId={farmId} />
+</DashboardLayout>

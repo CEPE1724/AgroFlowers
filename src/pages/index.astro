@@ -1,0 +1,13 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="Cargando">
+  <div class="flex min-h-screen items-center justify-center bg-surface-light dark:bg-surface-dark">
+    <p class="text-sm text-primary-500 dark:text-primary-400">Cargando AgroFlowers AI...</p>
+  </div>
+  <script>
+    const hasSession = Boolean(window.localStorage.getItem('agroflowers_session'));
+    window.location.replace(hasSession ? '/dashboard' : '/login');
+  </script>
+</MainLayout>

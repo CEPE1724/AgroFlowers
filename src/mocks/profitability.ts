@@ -1,0 +1,40 @@
+import type { ProfitabilityRecord } from '@/types/profitability';
+
+export const mockProfitability: ProfitabilityRecord[] = [
+  {
+    shipmentId: 1,
+    shipmentNumber: 'EMB-000075',
+    shipmentDate: '2026-07-08',
+    farmName: 'Rosas del Valle',
+    customer: 'Flowers Market USA',
+    totalSale: 3850.0,
+    totalCost: 3006.2,
+    profit: 843.8,
+    profitMargin: 21.92,
+    classification: 'EXCELLENT',
+  },
+  {
+    shipmentId: 2,
+    shipmentNumber: 'EMB-000076',
+    shipmentDate: '2026-07-12',
+    farmName: 'Flor Andina',
+    customer: 'NY Flower Imports',
+    totalSale: 3420.0,
+    totalCost: 2645.8,
+    profit: 774.2,
+    profitMargin: 22.64,
+    classification: 'EXCELLENT',
+  },
+  {
+    shipmentId: 3,
+    shipmentNumber: 'EMB-000077',
+    shipmentDate: '2026-07-18',
+    farmName: 'Ecuadorian Blooms',
+    customer: 'Miami Premium Flowers',
+    totalSale: 3100.0,
+    totalCost: 2860.0,
+    profit: 240.0,
+    profitMargin: 7.74,
+    classification: 'LOW',
+  },
+];

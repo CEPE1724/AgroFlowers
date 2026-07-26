@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { PurchaseForm } from '@/components/purchases/PurchaseForm';
+---
+
+<DashboardLayout
+  title="Nueva compra"
+  pageTitle="Nueva compra"
+  breadcrumbs={[{ label: 'Compras', href: '/purchases' }, { label: 'Nueva' }]}
+  requiredPermission="PURCHASES_CREATE"
+>
+  <PurchaseForm client:load />
+</DashboardLayout>

@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { FlowerForm } from '@/components/flowers/FlowerForm';
+---
+
+<DashboardLayout
+  title="Nueva variedad"
+  pageTitle="Nueva variedad"
+  breadcrumbs={[{ label: 'Flores y variedades', href: '/flowers' }, { label: 'Nueva' }]}
+  requiredPermission="FLOWERS_MANAGE"
+>
+  <FlowerForm client:load />
+</DashboardLayout>

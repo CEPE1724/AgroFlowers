@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { FarmsTable } from '@/components/farms/FarmsTable';
+---
+
+<DashboardLayout
+  title="Fincas"
+  pageTitle="Fincas proveedoras"
+  breadcrumbs={[{ label: 'Fincas' }]}
+  requiredPermission="FARMS_VIEW"
+>
+  <FarmsTable client:load />
+</DashboardLayout>

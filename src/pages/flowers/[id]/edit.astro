@@ -1,0 +1,16 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { FlowerEditContainer } from '@/components/flowers/FlowerEditContainer';
+
+const { id } = Astro.params;
+const flowerId = Number(id);
+---
+
+<DashboardLayout
+  title="Editar variedad"
+  pageTitle="Editar variedad"
+  breadcrumbs={[{ label: 'Flores y variedades', href: '/flowers' }, { label: 'Editar' }]}
+  requiredPermission="FLOWERS_MANAGE"
+>
+  <FlowerEditContainer client:load flowerId={flowerId} />
+</DashboardLayout>

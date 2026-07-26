@@ -1,0 +1,16 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { PurchaseDetailView } from '@/components/purchases/PurchaseDetailView';
+
+const { id } = Astro.params;
+const purchaseId = Number(id);
+---
+
+<DashboardLayout
+  title="Detalle de compra"
+  pageTitle="Detalle de compra"
+  breadcrumbs={[{ label: 'Compras', href: '/purchases' }, { label: 'Detalle' }]}
+  requiredPermission="PURCHASES_VIEW"
+>
+  <PurchaseDetailView client:load purchaseId={purchaseId} />
+</DashboardLayout>
