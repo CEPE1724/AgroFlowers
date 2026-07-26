@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { SaleForm } from '@/components/sales/SaleForm';
+---
+
+<DashboardLayout
+  title="Nueva venta"
+  pageTitle="Nueva venta"
+  breadcrumbs={[{ label: 'Ventas', href: '/sales' }, { label: 'Nueva' }]}
+  requiredPermission="SALES_CREATE"
+>
+  <SaleForm client:load />
+</DashboardLayout>

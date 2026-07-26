@@ -20,4 +20,4 @@ export interface Shipment {
   status: ShipmentStatus;
 }
 
-export type ShipmentFormValues = Omit<Shipment, 'id' | 'billableWeight' | 'estimatedFreight'>;
+export type ShipmentFormValues = Omit<Shipment, 'id' | 'shipmentNumber' | 'billableWeight' | 'estimatedFreight'>;

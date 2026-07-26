@@ -1,0 +1,8 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { SalesTable } from '@/components/sales/SalesTable';
+---
+
+<DashboardLayout title="Ventas" pageTitle="Ventas" breadcrumbs={[{ label: 'Ventas' }]} requiredPermission="SALES_VIEW">
+  <SalesTable client:load />
+</DashboardLayout>

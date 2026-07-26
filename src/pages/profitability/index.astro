@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { ProfitabilityView } from '@/components/profitability/ProfitabilityView';
+---
+
+<DashboardLayout
+  title="Rentabilidad"
+  pageTitle="Rentabilidad por embarque"
+  breadcrumbs={[{ label: 'Rentabilidad' }]}
+  requiredPermission="PROFITABILITY_VIEW"
+>
+  <ProfitabilityView client:load />
+</DashboardLayout>
