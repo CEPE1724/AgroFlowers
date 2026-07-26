@@ -1,0 +1,8 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { CostsTable } from '@/components/costs/CostsTable';
+---
+
+<DashboardLayout title="Costos" pageTitle="Costos logísticos" breadcrumbs={[{ label: 'Costos' }]} requiredPermission="COSTS_VIEW">
+  <CostsTable client:load />
+</DashboardLayout>

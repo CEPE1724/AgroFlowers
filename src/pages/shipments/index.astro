@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { ShipmentsTable } from '@/components/shipments/ShipmentsTable';
+---
+
+<DashboardLayout
+  title="Embarques"
+  pageTitle="Embarques"
+  breadcrumbs={[{ label: 'Embarques' }]}
+  requiredPermission="SHIPMENTS_VIEW"
+>
+  <ShipmentsTable client:load />
+</DashboardLayout>

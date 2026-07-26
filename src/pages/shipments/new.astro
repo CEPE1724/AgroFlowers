@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { ShipmentForm } from '@/components/shipments/ShipmentForm';
+---
+
+<DashboardLayout
+  title="Nuevo embarque"
+  pageTitle="Nuevo embarque"
+  breadcrumbs={[{ label: 'Embarques', href: '/shipments' }, { label: 'Nuevo' }]}
+  requiredPermission="SHIPMENTS_CREATE"
+>
+  <ShipmentForm client:load />
+</DashboardLayout>

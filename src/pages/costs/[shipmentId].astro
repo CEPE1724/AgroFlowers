@@ -1,0 +1,16 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { CostDetailView } from '@/components/costs/CostDetailView';
+
+const { shipmentId } = Astro.params;
+const parsedShipmentId = Number(shipmentId);
+---
+
+<DashboardLayout
+  title="Costos del embarque"
+  pageTitle="Costos del embarque"
+  breadcrumbs={[{ label: 'Costos', href: '/costs' }, { label: 'Detalle' }]}
+  requiredPermission="COSTS_VIEW"
+>
+  <CostDetailView client:load shipmentId={parsedShipmentId} />
+</DashboardLayout>

@@ -1,0 +1,16 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { ShipmentDetail } from '@/components/shipments/ShipmentDetail';
+
+const { id } = Astro.params;
+const shipmentId = Number(id);
+---
+
+<DashboardLayout
+  title="Detalle de embarque"
+  pageTitle="Detalle de embarque"
+  breadcrumbs={[{ label: 'Embarques', href: '/shipments' }, { label: 'Detalle' }]}
+  requiredPermission="SHIPMENTS_VIEW"
+>
+  <ShipmentDetail client:load shipmentId={shipmentId} />
+</DashboardLayout>

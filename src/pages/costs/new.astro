@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { CostForm } from '@/components/costs/CostForm';
+---
+
+<DashboardLayout
+  title="Nuevo costo"
+  pageTitle="Registrar costos de embarque"
+  breadcrumbs={[{ label: 'Costos', href: '/costs' }, { label: 'Nuevo' }]}
+  requiredPermission="COSTS_CREATE"
+>
+  <CostForm client:load />
+</DashboardLayout>
