@@ -1,0 +1,13 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { AiAssistantView } from '@/components/ai/AiAssistantView';
+---
+
+<DashboardLayout
+  title="Asistente IA"
+  pageTitle="Asistente de inteligencia artificial"
+  breadcrumbs={[{ label: 'Asistente IA' }]}
+  requiredPermission="AI_ASSISTANT"
+>
+  <AiAssistantView client:load />
+</DashboardLayout>

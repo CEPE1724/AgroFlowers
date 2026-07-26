@@ -4,6 +4,7 @@ import { Sun, Moon, LogOut, ChevronDown, User as UserIcon, Bell, Menu } from 'lu
 import { authStore } from '@/stores/authStore';
 import { themeStore, toggleTheme, toggleMobileMenu } from '@/stores/uiStore';
 import { clearSession } from '@/stores/authStore';
+import { isUsingMocks, logoutFromKeycloak } from '@/services/authService';
 import { ROLE_LABELS } from '@/utils/roleLabels';
 
 interface TopbarProps {
@@ -28,8 +29,13 @@ export function Topbar({ title, breadcrumbs = [] }: TopbarProps) {
   }, []);
 
   function handleLogout() {
-    clearSession();
-    window.location.href = '/login';
+    if (isUsingMocks()) {
+      clearSession();
+      window.location.href = '/login';
+    } else {
+      clearSession();
+      logoutFromKeycloak();
+    }
   }
 
   return (

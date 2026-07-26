@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { initAuth, authStore } from '@/stores/authStore';
+import { initAuth, authStore, setSession } from '@/stores/authStore';
+import { isUsingMocks, initKeycloakSession, loginWithKeycloak } from '@/services/authService';
 import { can, type PERMISSIONS } from '@/utils/permissions';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
@@ -13,21 +14,44 @@ export function AuthGuard({ requiredPermission }: AuthGuardProps) {
   const [status, setStatus] = useState<GuardStatus>('checking');
 
   useEffect(() => {
-    initAuth();
-    const { isAuthenticated } = authStore.get();
+    let cancelled = false;
 
-    if (!isAuthenticated) {
-      const redirectTo = encodeURIComponent(window.location.pathname);
-      window.location.replace(`/login?redirect=${redirectTo}`);
-      return;
+    async function verify() {
+      if (isUsingMocks()) {
+        initAuth();
+        if (!authStore.get().isAuthenticated) {
+          const redirectTo = encodeURIComponent(window.location.pathname);
+          window.location.replace(`/login?redirect=${redirectTo}`);
+          return;
+        }
+      } else {
+        try {
+          const session = await initKeycloakSession();
+          if (cancelled) return;
+
+          if (!session) {
+            loginWithKeycloak(window.location.pathname);
+            return;
+          }
+          setSession(session);
+        } catch {
+          loginWithKeycloak(window.location.pathname);
+          return;
+        }
+      }
+
+      if (requiredPermission && !can(requiredPermission)) {
+        window.location.replace('/unauthorized');
+        return;
+      }
+
+      if (!cancelled) setStatus('ok');
     }
 
-    if (requiredPermission && !can(requiredPermission)) {
-      window.location.replace('/unauthorized');
-      return;
-    }
-
-    setStatus('ok');
+    verify();
+    return () => {
+      cancelled = true;
+    };
   }, [requiredPermission]);
 
   if (status === 'checking') {

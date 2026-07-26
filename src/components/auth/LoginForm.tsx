@@ -3,10 +3,17 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, KeyRound } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
-import { loginWithMock, demoAccounts, InvalidCredentialsError } from '@/services/authService';
+import {
+  loginWithMock,
+  demoAccounts,
+  InvalidCredentialsError,
+  isUsingMocks,
+  initKeycloakSession,
+  loginWithKeycloak,
+} from '@/services/authService';
 import { initAuth, setSession, authStore } from '@/stores/authStore';
 import { ROLE_LABELS } from '@/utils/roleLabels';
 
@@ -25,6 +32,8 @@ function getRedirectTarget(): string {
 
 export function LoginForm() {
   const [checkingSession, setCheckingSession] = useState(true);
+  const [isRedirectingToKeycloak, setIsRedirectingToKeycloak] = useState(false);
+  const usingMocks = isUsingMocks();
 
   const {
     register,
@@ -37,13 +46,26 @@ export function LoginForm() {
   });
 
   useEffect(() => {
-    initAuth();
-    if (authStore.get().isAuthenticated) {
-      window.location.replace(getRedirectTarget());
-      return;
+    async function checkExistingSession() {
+      if (usingMocks) {
+        initAuth();
+        if (authStore.get().isAuthenticated) {
+          window.location.replace(getRedirectTarget());
+          return;
+        }
+      } else {
+        const session = await initKeycloakSession().catch(() => null);
+        if (session) {
+          setSession(session);
+          window.location.replace(getRedirectTarget());
+          return;
+        }
+      }
+      setCheckingSession(false);
     }
-    setCheckingSession(false);
-  }, []);
+
+    checkExistingSession();
+  }, [usingMocks]);
 
   async function onSubmit(values: LoginFormValues) {
     try {
@@ -65,8 +87,36 @@ export function LoginForm() {
     setValue('password', '123456', { shouldValidate: true });
   }
 
+  function handleKeycloakLogin() {
+    setIsRedirectingToKeycloak(true);
+    loginWithKeycloak(getRedirectTarget());
+  }
+
   if (checkingSession) {
     return <div className="h-[420px] w-full max-w-md animate-pulse rounded-2xl bg-primary-50 dark:bg-primary-900/20" />;
+  }
+
+  if (!usingMocks) {
+    return (
+      <div className="w-full max-w-md">
+        <div className="card space-y-4 p-6 text-center sm:p-8">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-300">
+            <KeyRound className="h-6 w-6" />
+          </div>
+          <p className="text-sm text-gray-500 dark:text-primary-400">
+            Serás redirigido a la página de inicio de sesión de Keycloak para autenticarte de forma segura.
+          </p>
+          <Button fullWidth size="lg" isLoading={isRedirectingToKeycloak} onClick={handleKeycloakLogin}>
+            Iniciar sesión con Keycloak
+          </Button>
+          <p className="flex items-start gap-1.5 text-left text-xs text-gray-500 dark:text-primary-400/80">
+            <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            Tus credenciales nunca son procesadas por esta aplicación; la autenticación ocurre íntegramente en el
+            servidor de Keycloak mediante OAuth2 / OIDC (Authorization Code + PKCE).
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
