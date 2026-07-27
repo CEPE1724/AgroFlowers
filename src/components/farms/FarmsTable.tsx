@@ -10,7 +10,7 @@ import { listFarms, deactivateFarm } from '@/services/farmService';
 import { FARM_RATING_MAP, RECORD_STATUS_MAP } from '@/utils/statusMaps';
 import { formatPercentage } from '@/utils/currency';
 import { getErrorMessage } from '@/utils/errors';
-import { can } from '@/utils/permissions';
+import { usePermission } from '@/utils/permissions';
 import { DEFAULT_PAGE_SIZE } from '@/types/common';
 import type { Farm } from '@/types/farm';
 
@@ -24,7 +24,7 @@ export function FarmsTable() {
   const [farmToDeactivate, setFarmToDeactivate] = useState<Farm | null>(null);
   const [isDeactivating, setIsDeactivating] = useState(false);
 
-  const canManage = can('FARMS_MANAGE');
+  const canManage = usePermission('FARMS_MANAGE');
 
   async function loadFarms() {
     setIsLoading(true);

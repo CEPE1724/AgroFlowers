@@ -8,7 +8,7 @@ import { ErrorState } from '@/components/common/ErrorState';
 import { FARM_RATING_MAP, RECORD_STATUS_MAP } from '@/utils/statusMaps';
 import { formatPercentage } from '@/utils/currency';
 import { getErrorMessage } from '@/utils/errors';
-import { can } from '@/utils/permissions';
+import { usePermission } from '@/utils/permissions';
 import type { Farm } from '@/types/farm';
 
 interface Props {
@@ -19,6 +19,7 @@ export function FarmDetail({ farmId }: Props) {
   const [farm, setFarm] = useState<Farm | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const canManage = usePermission('FARMS_MANAGE');
 
   async function load() {
     setIsLoading(true);
@@ -54,7 +55,7 @@ export function FarmDetail({ farmId }: Props) {
               <StatusBadge label={status.label} tone={status.tone} />
             </div>
           </div>
-          {can('FARMS_MANAGE') && (
+          {canManage && (
             <Button leftIcon={<Pencil className="h-4 w-4" />} onClick={() => (window.location.href = `/farms/${farm.id}/edit`)}>
               Editar finca
             </Button>

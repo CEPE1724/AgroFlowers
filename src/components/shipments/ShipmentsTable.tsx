@@ -8,7 +8,7 @@ import { listShipments } from '@/services/shipmentService';
 import { SHIPMENT_STATUS_MAP } from '@/utils/statusMaps';
 import { formatDate } from '@/utils/dates';
 import { getErrorMessage } from '@/utils/errors';
-import { can } from '@/utils/permissions';
+import { usePermission } from '@/utils/permissions';
 import { DEFAULT_PAGE_SIZE } from '@/types/common';
 import type { Shipment } from '@/types/shipment';
 
@@ -19,6 +19,7 @@ export function ShipmentsTable() {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const canCreate = usePermission('SHIPMENTS_CREATE');
 
   async function load() {
     setIsLoading(true);
@@ -73,7 +74,7 @@ export function ShipmentsTable() {
         emptyTitle="No hay embarques registrados"
         emptyDescription="Registra un nuevo embarque para comenzar."
         toolbarExtra={
-          can('SHIPMENTS_CREATE') && (
+          canCreate && (
             <Button size="sm" leftIcon={<Plus className="h-4 w-4" />} onClick={() => (window.location.href = '/shipments/new')}>
               Nuevo embarque
             </Button>
@@ -89,7 +90,7 @@ export function ShipmentsTable() {
             >
               <Eye className="h-4 w-4" />
             </button>
-            {can('SHIPMENTS_CREATE') && (
+            {canCreate && (
               <button
                 type="button"
                 onClick={() => (window.location.href = `/shipments/${row.id}/edit`)}

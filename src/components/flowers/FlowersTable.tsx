@@ -7,7 +7,7 @@ import { Button } from '@/components/common/Button';
 import { listFlowers } from '@/services/flowerService';
 import { RECORD_STATUS_MAP } from '@/utils/statusMaps';
 import { getErrorMessage } from '@/utils/errors';
-import { can } from '@/utils/permissions';
+import { usePermission } from '@/utils/permissions';
 import { DEFAULT_PAGE_SIZE } from '@/types/common';
 import type { Flower } from '@/types/flower';
 
@@ -19,7 +19,7 @@ export function FlowersTable() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const canManage = can('FLOWERS_MANAGE');
+  const canManage = usePermission('FLOWERS_MANAGE');
 
   async function load() {
     setIsLoading(true);

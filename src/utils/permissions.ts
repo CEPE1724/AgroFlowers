@@ -1,3 +1,4 @@
+import { useStore } from '@nanostores/react';
 import type { Role } from '@/types/auth';
 import { authStore } from '@/stores/authStore';
 
@@ -33,4 +34,10 @@ export const PERMISSIONS = {
 
 export function can(permission: keyof typeof PERMISSIONS): boolean {
   return hasAnyRole(PERMISSIONS[permission]);
+}
+
+export function usePermission(permission: keyof typeof PERMISSIONS): boolean {
+  const { session } = useStore(authStore);
+  if (!session) return false;
+  return PERMISSIONS[permission].includes(session.user.role);
 }

@@ -9,7 +9,7 @@ import { PAYMENT_STATUS_MAP } from '@/utils/statusMaps';
 import { formatCurrency } from '@/utils/currency';
 import { formatDate } from '@/utils/dates';
 import { getErrorMessage } from '@/utils/errors';
-import { can } from '@/utils/permissions';
+import { usePermission } from '@/utils/permissions';
 import { DEFAULT_PAGE_SIZE } from '@/types/common';
 import type { Sale } from '@/types/sale';
 
@@ -20,6 +20,7 @@ export function SalesTable() {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const canCreate = usePermission('SALES_CREATE');
 
   async function load() {
     setIsLoading(true);
@@ -74,7 +75,7 @@ export function SalesTable() {
         emptyTitle="No hay ventas registradas"
         emptyDescription="Registra una nueva venta para comenzar."
         toolbarExtra={
-          can('SALES_CREATE') && (
+          canCreate && (
             <Button size="sm" leftIcon={<Plus className="h-4 w-4" />} onClick={() => (window.location.href = '/sales/new')}>
               Nueva venta
             </Button>

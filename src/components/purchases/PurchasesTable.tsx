@@ -9,7 +9,7 @@ import { PURCHASE_STATUS_MAP } from '@/utils/statusMaps';
 import { formatCurrency } from '@/utils/currency';
 import { formatDate } from '@/utils/dates';
 import { getErrorMessage } from '@/utils/errors';
-import { can } from '@/utils/permissions';
+import { usePermission } from '@/utils/permissions';
 import { DEFAULT_PAGE_SIZE } from '@/types/common';
 import type { Purchase } from '@/types/purchase';
 
@@ -20,6 +20,7 @@ export function PurchasesTable() {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const canCreate = usePermission('PURCHASES_CREATE');
 
   async function load() {
     setIsLoading(true);
@@ -74,7 +75,7 @@ export function PurchasesTable() {
         emptyTitle="No hay compras registradas"
         emptyDescription="Registra una nueva compra de flores para comenzar."
         toolbarExtra={
-          can('PURCHASES_CREATE') && (
+          canCreate && (
             <Button size="sm" leftIcon={<Plus className="h-4 w-4" />} onClick={() => (window.location.href = '/purchases/new')}>
               Nueva compra
             </Button>

@@ -9,7 +9,7 @@ import { SHIPMENT_STATUS_MAP } from '@/utils/statusMaps';
 import { formatCurrency } from '@/utils/currency';
 import { formatDate } from '@/utils/dates';
 import { getErrorMessage } from '@/utils/errors';
-import { can } from '@/utils/permissions';
+import { usePermission } from '@/utils/permissions';
 import type { Shipment } from '@/types/shipment';
 
 interface Props {
@@ -20,6 +20,7 @@ export function ShipmentDetail({ shipmentId }: Props) {
   const [shipment, setShipment] = useState<Shipment | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const canEdit = usePermission('SHIPMENTS_CREATE');
 
   async function load() {
     setIsLoading(true);
@@ -57,7 +58,7 @@ export function ShipmentDetail({ shipmentId }: Props) {
           </div>
           <div className="flex items-center gap-3">
             <StatusBadge label={status.label} tone={status.tone} />
-            {can('SHIPMENTS_CREATE') && (
+            {canEdit && (
               <Button leftIcon={<Pencil className="h-4 w-4" />} onClick={() => (window.location.href = `/shipments/${shipment.id}/edit`)}>
                 Editar
               </Button>

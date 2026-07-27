@@ -6,7 +6,7 @@ import { Button } from '@/components/common/Button';
 import { listCosts } from '@/services/costService';
 import { formatCurrency } from '@/utils/currency';
 import { getErrorMessage } from '@/utils/errors';
-import { can } from '@/utils/permissions';
+import { usePermission } from '@/utils/permissions';
 import { DEFAULT_PAGE_SIZE } from '@/types/common';
 import type { Cost } from '@/types/cost';
 
@@ -17,6 +17,7 @@ export function CostsTable() {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const canCreate = usePermission('COSTS_CREATE');
 
   async function load() {
     setIsLoading(true);
@@ -69,7 +70,7 @@ export function CostsTable() {
         emptyTitle="No hay costos registrados"
         emptyDescription="Registra los costos de un embarque para comenzar."
         toolbarExtra={
-          can('COSTS_CREATE') && (
+          canCreate && (
             <Button size="sm" leftIcon={<Plus className="h-4 w-4" />} onClick={() => (window.location.href = '/costs/new')}>
               Nuevo costo
             </Button>
