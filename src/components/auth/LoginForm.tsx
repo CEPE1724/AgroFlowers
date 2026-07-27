@@ -95,10 +95,10 @@ export function LoginForm() {
             <KeyRound className="h-6 w-6" />
           </div>
           <p className="text-sm text-gray-500 dark:text-primary-400">
-            Serás redirigido a la página de inicio de sesión de Keycloak para autenticarte de forma segura.
+            Serás redirigido a la página de inicio de sesión.
           </p>
           <Button fullWidth size="lg" isLoading={isRedirectingToKeycloak} onClick={handleKeycloakLogin}>
-            Iniciar sesión con Keycloak
+            Iniciar sesión
           </Button>
           <p className="flex items-start gap-1.5 text-left text-xs text-gray-500 dark:text-primary-400/80">
             <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" />

@@ -1,10 +1,9 @@
-# Etapa 1: instalar dependencias y compilar Astro
+
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Las variables PUBLIC_* de Astro/Vite se incrustan en el bundle en tiempo de build,
-# por lo que deben pasarse como build args (no como variables de entorno en runtime).
+
 ARG PUBLIC_API_BASE_URL=http://localhost/api
 ARG PUBLIC_KEYCLOAK_URL=http://localhost/auth
 ARG PUBLIC_KEYCLOAK_REALM=agroflowers-realm
@@ -23,7 +22,7 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# Etapa 2: servir la aplicación (Node SSR) detrás de Nginx
+
 FROM node:20-alpine
 
 RUN apk add --no-cache nginx
