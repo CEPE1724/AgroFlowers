@@ -1,6 +1,7 @@
 import type { Shipment, ShipmentFormValues } from '@/types/shipment';
 import type { PaginatedResult, TableQuery } from '@/types/common';
 import { mockShipments } from '@/mocks/shipments';
+import { mockFarms } from '@/mocks/farms';
 import { createMockCollection, simulateNetworkDelay } from '@/utils/mockCollection';
 import { round2 } from '@/utils/currency';
 import { apiClient } from './apiClient';
@@ -17,6 +18,10 @@ function computeFreight(values: ShipmentFormValues) {
   const billableWeight = Math.max(values.actualWeight, values.volumetricWeight);
   const estimatedFreight = round2(billableWeight * values.ratePerKg);
   return { billableWeight, estimatedFreight };
+}
+
+function resolveFarmName(farmId: number): string {
+  return mockFarms.find((farm) => farm.id === farmId)?.name ?? 'N/D';
 }
 
 export async function listShipments(query: TableQuery = {}): Promise<PaginatedResult<Shipment>> {
@@ -44,7 +49,8 @@ export async function createShipment(values: ShipmentFormValues): Promise<Shipme
     await simulateNetworkDelay();
     const { billableWeight, estimatedFreight } = computeFreight(values);
     const shipmentNumber = `EMB-${String(shipmentSequence++).padStart(6, '0')}`;
-    return collection.create({ ...values, shipmentNumber, billableWeight, estimatedFreight });
+    const farmName = resolveFarmName(values.farmId);
+    return collection.create({ ...values, shipmentNumber, farmName, billableWeight, estimatedFreight });
   }
   const { data } = await apiClient.post<Shipment>('/shipments', values);
   return data;
@@ -54,7 +60,8 @@ export async function updateShipment(id: number, values: ShipmentFormValues): Pr
   if (USE_MOCKS) {
     await simulateNetworkDelay();
     const { billableWeight, estimatedFreight } = computeFreight(values);
-    return collection.update(id, { ...values, billableWeight, estimatedFreight });
+    const farmName = resolveFarmName(values.farmId);
+    return collection.update(id, { ...values, farmName, billableWeight, estimatedFreight });
   }
   const { data } = await apiClient.put<Shipment>(`/shipments/${id}`, values);
   return data;
