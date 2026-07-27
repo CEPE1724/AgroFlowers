@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const shipmentSchema = z.object({
+  farmId: z.coerce.number().int().min(1, 'La finca es obligatoria'),
   shipmentDate: z.string().min(1, 'La fecha es obligatoria'),
   freightCompany: z.string().min(1, 'La carguera es obligatoria'),
   airline: z.string().min(1, 'La aerolínea es obligatoria'),

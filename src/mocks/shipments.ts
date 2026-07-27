@@ -4,6 +4,8 @@ export const mockShipments: Shipment[] = [
   {
     id: 1,
     shipmentNumber: 'EMB-000075',
+    farmId: 1,
+    farmName: 'Finca El Rosal',
     shipmentDate: '2026-07-08',
     freightCompany: 'UPS',
     airline: 'Avianca Cargo',
@@ -23,6 +25,8 @@ export const mockShipments: Shipment[] = [
   {
     id: 2,
     shipmentNumber: 'EMB-000076',
+    farmId: 3,
+    farmName: 'Finca Valle Verde',
     shipmentDate: '2026-07-12',
     freightCompany: 'Kuehne+Nagel',
     airline: 'LATAM Cargo',
@@ -42,6 +46,8 @@ export const mockShipments: Shipment[] = [
   {
     id: 3,
     shipmentNumber: 'EMB-000077',
+    farmId: 35,
+    farmName: 'Finca Andes Bloom',
     shipmentDate: '2026-07-18',
     freightCompany: 'UPS',
     airline: 'Avianca Cargo',

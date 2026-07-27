@@ -70,6 +70,7 @@ export function ShipmentDetail({ shipmentId }: Props) {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="card space-y-2 p-5">
           <h3 className="text-sm font-semibold text-primary-900 dark:text-primary-50">Logística</h3>
+          <p className="text-sm text-gray-600 dark:text-primary-300">Finca: {shipment.farmName}</p>
           <p className="text-sm text-gray-600 dark:text-primary-300">Carguera: {shipment.freightCompany}</p>
           <p className="text-sm text-gray-600 dark:text-primary-300">Guía aérea: {shipment.airWaybill}</p>
           <p className="text-sm text-gray-600 dark:text-primary-300">Cliente: {shipment.customer}</p>

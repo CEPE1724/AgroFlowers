@@ -111,6 +111,6 @@ export async function askAssistant(question: string): Promise<AiResponse> {
     await new Promise((resolve) => setTimeout(resolve, 900));
     return buildMockResponse(question);
   }
-  const { data } = await apiClient.post<AiResponse>('/ai/assistant', { question });
+  const { data } = await apiClient.post<AiResponse>('/ai/assistant', { question }, { timeout: 120000 });
   return data;
 }

@@ -3,6 +3,8 @@ export type ShipmentStatus = 'DRAFT' | 'READY' | 'SHIPPED' | 'DELIVERED' | 'CANC
 export interface Shipment {
   id: number;
   shipmentNumber: string;
+  farmId: number;
+  farmName: string;
   shipmentDate: string;
   freightCompany: string;
   airline: string;
@@ -20,4 +22,4 @@ export interface Shipment {
   status: ShipmentStatus;
 }
 
-export type ShipmentFormValues = Omit<Shipment, 'id' | 'shipmentNumber' | 'billableWeight' | 'estimatedFreight'>;
+export type ShipmentFormValues = Omit<Shipment, 'id' | 'shipmentNumber' | 'farmName' | 'billableWeight' | 'estimatedFreight'>;

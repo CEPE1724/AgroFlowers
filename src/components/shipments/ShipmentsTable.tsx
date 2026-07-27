@@ -46,6 +46,7 @@ export function ShipmentsTable() {
   const columns: DataTableColumn<Shipment>[] = [
     { key: 'shipmentNumber', header: 'Embarque', render: (row) => <span className="font-medium">{row.shipmentNumber}</span> },
     { key: 'shipmentDate', header: 'Fecha', render: (row) => formatDate(row.shipmentDate), sortable: true, sortValue: (r) => r.shipmentDate },
+    { key: 'farmName', header: 'Finca', render: (row) => row.farmName },
     { key: 'destination', header: 'Destino', render: (row) => row.destination },
     { key: 'customer', header: 'Cliente', render: (row) => row.customer },
     { key: 'boxes', header: 'Cajas', render: (row) => row.boxes },

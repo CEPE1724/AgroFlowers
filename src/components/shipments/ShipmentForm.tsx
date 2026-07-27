@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
@@ -8,10 +8,12 @@ import { Select } from '@/components/common/Select';
 import { Button } from '@/components/common/Button';
 import { shipmentSchema, type ShipmentSchemaValues } from '@/schemas/shipmentSchema';
 import { createShipment, updateShipment } from '@/services/shipmentService';
+import { listAllFarms } from '@/services/farmService';
 import { formatCurrency, round2 } from '@/utils/currency';
 import { getErrorMessage } from '@/utils/errors';
 import { toInputDate } from '@/utils/dates';
 import type { Shipment } from '@/types/shipment';
+import type { Farm } from '@/types/farm';
 
 interface Props {
   shipment?: Shipment;
@@ -28,6 +30,11 @@ const STATUS_OPTIONS = [
 export function ShipmentForm({ shipment }: Props) {
   const isEditing = Boolean(shipment);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [farms, setFarms] = useState<Farm[]>([]);
+
+  useEffect(() => {
+    listAllFarms().then((farmList) => setFarms(farmList.filter((f) => f.status === 'ACTIVE')));
+  }, []);
 
   const {
     register,
@@ -39,6 +46,7 @@ export function ShipmentForm({ shipment }: Props) {
     defaultValues: shipment
       ? { ...shipment, shipmentDate: toInputDate(shipment.shipmentDate) }
       : {
+          farmId: 0,
           shipmentDate: toInputDate(new Date()),
           freightCompany: '',
           airline: '',
@@ -86,6 +94,14 @@ export function ShipmentForm({ shipment }: Props) {
       <div className="card space-y-4 p-5">
         <h3 className="text-sm font-semibold text-primary-900 dark:text-primary-50">Datos del embarque</h3>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <Select
+            label="Finca"
+            required
+            placeholder="Selecciona una finca"
+            options={farms.map((farm) => ({ value: farm.id, label: `${farm.code} · ${farm.name}` }))}
+            error={errors.farmId?.message}
+            {...register('farmId')}
+          />
           <Input label="Fecha" type="date" required error={errors.shipmentDate?.message} {...register('shipmentDate')} />
           <Input label="Carguera" required error={errors.freightCompany?.message} {...register('freightCompany')} />
           <Input label="Aerolínea" required error={errors.airline?.message} {...register('airline')} />
