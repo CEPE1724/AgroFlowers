@@ -39,7 +39,6 @@ export function FarmForm({ farm }: FarmFormProps) {
     resolver: zodResolver(farmSchema),
     defaultValues: farm
       ? {
-          code: farm.code,
           name: farm.name,
           ruc: farm.ruc,
           contactName: farm.contactName,
@@ -54,7 +53,6 @@ export function FarmForm({ farm }: FarmFormProps) {
           observation: farm.observation ?? '',
         }
       : {
-          code: '',
           name: '',
           ruc: '',
           contactName: '',
@@ -92,8 +90,12 @@ export function FarmForm({ farm }: FarmFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
       <div className="card space-y-4 p-5">
         <h3 className="text-sm font-semibold text-primary-900 dark:text-primary-50">Datos generales</h3>
+        {isEditing && farm && (
+          <p className="text-xs text-gray-500 dark:text-primary-400/70">
+            Código: <span className="font-mono font-medium text-primary-700 dark:text-primary-200">{farm.code}</span>
+          </p>
+        )}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Input label="Código" required error={errors.code?.message} {...register('code')} placeholder="FIN-004" />
           <Input label="Nombre de finca" required error={errors.name?.message} {...register('name')} />
           <Input label="RUC" required error={errors.ruc?.message} {...register('ruc')} placeholder="13 dígitos" maxLength={13} />
           <Input label="Persona de contacto" required error={errors.contactName?.message} {...register('contactName')} />

@@ -14,4 +14,4 @@ export interface Flower {
   status: RecordStatus;
 }
 
-export type FlowerFormValues = Omit<Flower, 'id'>;
+export type FlowerFormValues = Omit<Flower, 'id' | 'code'>;

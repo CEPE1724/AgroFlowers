@@ -154,7 +154,10 @@ export function PurchaseForm() {
                 <Input
                   label={index === 0 ? 'Tallos/ramo' : undefined}
                   type="number"
-                  min={1}
+                  readOnly
+                  tabIndex={-1}
+                  className="cursor-not-allowed bg-primary-50/60 dark:bg-primary-900/20"
+                  hint={index === 0 ? 'Automático, según la flor' : undefined}
                   error={errors.details?.[index]?.stemsPerBouquet?.message}
                   {...register(`details.${index}.stemsPerBouquet`)}
                 />

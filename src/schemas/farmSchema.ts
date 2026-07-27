@@ -4,9 +4,6 @@ const noEdgeSpaces = (message: string) =>
   z.string().refine((value) => value === value.trim(), message);
 
 export const farmSchema = z.object({
-  code: noEdgeSpaces('El código no debe tener espacios al inicio ni al final').pipe(
-    z.string().min(1, 'El código es obligatorio')
-  ),
   name: noEdgeSpaces('El nombre no debe tener espacios al inicio ni al final').pipe(
     z.string().min(1, 'El nombre de la finca es obligatorio')
   ),

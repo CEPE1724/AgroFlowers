@@ -37,9 +37,16 @@ export function FlowerForm({ flower }: FlowerFormProps) {
   } = useForm<FlowerSchemaValues>({
     resolver: zodResolver(flowerSchema),
     defaultValues: flower
-      ? { ...flower }
+      ? {
+          flowerType: flower.flowerType,
+          variety: flower.variety,
+          color: flower.color,
+          stemLength: flower.stemLength,
+          stemsPerBouquet: flower.stemsPerBouquet,
+          purchaseUnit: flower.purchaseUnit,
+          status: flower.status,
+        }
       : {
-          code: '',
           flowerType: '',
           variety: '',
           color: '',
@@ -69,8 +76,12 @@ export function FlowerForm({ flower }: FlowerFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="card space-y-4 p-5">
+      {isEditing && flower && (
+        <p className="text-xs text-gray-500 dark:text-primary-400/70">
+          Código: <span className="font-mono font-medium text-primary-700 dark:text-primary-200">{flower.code}</span>
+        </p>
+      )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Input label="Código" required error={errors.code?.message} {...register('code')} placeholder="ROS-FRE-50" />
         <Input label="Tipo de flor" required error={errors.flowerType?.message} {...register('flowerType')} placeholder="Rosa" />
         <Input label="Variedad" required error={errors.variety?.message} {...register('variety')} placeholder="Freedom" />
         <Input label="Color" required error={errors.color?.message} {...register('color')} />

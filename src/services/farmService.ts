@@ -27,10 +27,15 @@ export async function getFarmById(id: number): Promise<Farm> {
   return data;
 }
 
+function generateMockFarmCode(): string {
+  const next = collection.all().length + 1;
+  return `FIN-${String(next).padStart(3, '0')}`;
+}
+
 export async function createFarm(values: FarmFormValues): Promise<Farm> {
   if (USE_MOCKS) {
     await simulateNetworkDelay();
-    return collection.create({ ...values, profitMargin: 0 });
+    return collection.create({ ...values, code: generateMockFarmCode(), profitMargin: 0 });
   }
   const { data } = await apiClient.post<Farm>('/farms', values);
   return data;

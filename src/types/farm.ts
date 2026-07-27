@@ -19,4 +19,4 @@ export interface Farm {
   profitMargin: number;
 }
 
-export type FarmFormValues = Omit<Farm, 'id' | 'profitMargin'>;
+export type FarmFormValues = Omit<Farm, 'id' | 'code' | 'profitMargin'>;

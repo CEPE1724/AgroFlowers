@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 export const flowerSchema = z.object({
-  code: z.string().min(1, 'El código es obligatorio').refine((v) => v === v.trim(), 'No debe tener espacios al inicio ni al final'),
   flowerType: z.string().min(1, 'El tipo de flor es obligatorio'),
   variety: z.string().min(1, 'La variedad es obligatoria'),
   color: z.string().min(1, 'El color es obligatorio'),

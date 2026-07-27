@@ -27,10 +27,23 @@ export async function getFlowerById(id: number): Promise<Flower> {
   return data;
 }
 
+function generateMockFlowerCode(values: FlowerFormValues): string {
+  const part = (value: string) => value.trim().toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+  const base = `${part(values.flowerType)}-${part(values.variety)}-${values.stemLength}`;
+
+  let code = base;
+  let suffix = 1;
+  while (collection.all().some((flower) => flower.code === code)) {
+    suffix++;
+    code = `${base}-${suffix}`;
+  }
+  return code;
+}
+
 export async function createFlower(values: FlowerFormValues): Promise<Flower> {
   if (USE_MOCKS) {
     await simulateNetworkDelay();
-    return collection.create(values);
+    return collection.create({ ...values, code: generateMockFlowerCode(values) });
   }
   const { data } = await apiClient.post<Flower>('/flowers', values);
   return data;
