@@ -1,0 +1,21 @@
+---
+import DashboardLayout from '@/layouts/DashboardLayout.astro';
+import { CreateUserForm } from '@/components/settings/CreateUserForm';
+---
+
+<DashboardLayout
+  title="Configuración"
+  pageTitle="Configuración"
+  breadcrumbs={[{ label: 'Configuración' }]}
+  requiredPermission="SETTINGS_MANAGE"
+>
+  <div class="space-y-6">
+    <div>
+      <h2 class="text-base font-semibold text-primary-900 dark:text-primary-50">Nuevo usuario</h2>
+      <p class="text-sm text-gray-500 dark:text-primary-400/70">
+        Crea cuentas de Supervisor o Administrador para el sistema.
+      </p>
+    </div>
+    <CreateUserForm client:load />
+  </div>
+</DashboardLayout>

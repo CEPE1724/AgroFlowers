@@ -11,10 +11,10 @@ import {
   demoAccounts,
   InvalidCredentialsError,
   isUsingMocks,
-  initKeycloakSession,
+  ensureAuthInitialized,
   loginWithKeycloak,
 } from '@/services/authService';
-import { initAuth, setSession, authStore } from '@/stores/authStore';
+import { setSession, authStore } from '@/stores/authStore';
 import { ROLE_LABELS } from '@/utils/roleLabels';
 
 const loginSchema = z.object({
@@ -47,19 +47,10 @@ export function LoginForm() {
 
   useEffect(() => {
     async function checkExistingSession() {
-      if (usingMocks) {
-        initAuth();
-        if (authStore.get().isAuthenticated) {
-          window.location.replace(getRedirectTarget());
-          return;
-        }
-      } else {
-        const session = await initKeycloakSession().catch(() => null);
-        if (session) {
-          setSession(session);
-          window.location.replace(getRedirectTarget());
-          return;
-        }
+      await ensureAuthInitialized();
+      if (authStore.get().isAuthenticated) {
+        window.location.replace(getRedirectTarget());
+        return;
       }
       setCheckingSession(false);
     }
@@ -114,6 +105,12 @@ export function LoginForm() {
             Tus credenciales nunca son procesadas por esta aplicación; la autenticación ocurre íntegramente en el
             servidor de Keycloak mediante OAuth2 / OIDC (Authorization Code + PKCE).
           </p>
+          <p className="text-xs text-gray-500 dark:text-primary-400/80">
+            ¿No tienes cuenta?{' '}
+            <a href="/register" className="font-medium text-primary-700 hover:underline dark:text-primary-300">
+              Regístrate
+            </a>
+          </p>
         </div>
       </div>
     );
@@ -147,6 +144,12 @@ export function LoginForm() {
           <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" />
           Modo demostración: la autenticación real se delega a Keycloak (OAuth2 / JWT) al conectar con los
           microservicios.
+        </p>
+        <p className="text-center text-xs text-gray-500 dark:text-primary-400/80">
+          ¿No tienes cuenta?{' '}
+          <a href="/register" className="font-medium text-primary-700 hover:underline dark:text-primary-300">
+            Regístrate
+          </a>
         </p>
       </form>
 

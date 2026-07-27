@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { initAuth, authStore, setSession } from '@/stores/authStore';
-import { isUsingMocks, initKeycloakSession, loginWithKeycloak } from '@/services/authService';
+import { authStore } from '@/stores/authStore';
+import { isUsingMocks, ensureAuthInitialized, loginWithKeycloak } from '@/services/authService';
 import { can, type PERMISSIONS } from '@/utils/permissions';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
@@ -17,27 +17,19 @@ export function AuthGuard({ requiredPermission }: AuthGuardProps) {
     let cancelled = false;
 
     async function verify() {
-      if (isUsingMocks()) {
-        initAuth();
-        if (!authStore.get().isAuthenticated) {
+      await ensureAuthInitialized();
+      if (cancelled) return;
+
+      const { isAuthenticated } = authStore.get();
+
+      if (!isAuthenticated) {
+        if (isUsingMocks()) {
           const redirectTo = encodeURIComponent(window.location.pathname);
           window.location.replace(`/login?redirect=${redirectTo}`);
-          return;
-        }
-      } else {
-        try {
-          const session = await initKeycloakSession();
-          if (cancelled) return;
-
-          if (!session) {
-            loginWithKeycloak(window.location.pathname);
-            return;
-          }
-          setSession(session);
-        } catch {
+        } else {
           loginWithKeycloak(window.location.pathname);
-          return;
         }
+        return;
       }
 
       if (requiredPermission && !can(requiredPermission)) {

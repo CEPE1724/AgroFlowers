@@ -1,6 +1,6 @@
 import Keycloak from 'keycloak-js';
 import type { AuthUser, Role, Session } from '@/types/auth';
-import { setSession, clearSession } from '@/stores/authStore';
+import { setSession, clearSession, initAuth } from '@/stores/authStore';
 
 const USE_MOCKS = import.meta.env.PUBLIC_USE_MOCKS !== 'false';
 const SESSION_DURATION_MS = 60 * 60 * 1000;
@@ -151,4 +151,30 @@ export function loginWithKeycloak(redirectPath = '/dashboard'): void {
 export function logoutFromKeycloak(): void {
   if (refreshTimer) clearInterval(refreshTimer);
   getKeycloakInstance().logout({ redirectUri: `${window.location.origin}/login` });
+}
+
+let authInitPromise: Promise<void> | null = null;
+
+export function ensureAuthInitialized(): Promise<void> {
+  if (!authInitPromise) {
+    authInitPromise = (async () => {
+      if (USE_MOCKS) {
+        initAuth();
+        return;
+      }
+
+      try {
+        const session = await initKeycloakSession();
+        if (session) {
+          setSession(session);
+        } else {
+          clearSession();
+        }
+      } catch {
+        clearSession();
+      }
+    })();
+  }
+
+  return authInitPromise;
 }

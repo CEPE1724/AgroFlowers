@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { getSession, clearSession } from '@/stores/authStore';
+import { ensureAuthInitialized } from '@/services/authService';
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.PUBLIC_API_BASE_URL,
@@ -8,7 +9,8 @@ export const apiClient = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-apiClient.interceptors.request.use((config) => {
+apiClient.interceptors.request.use(async (config) => {
+  await ensureAuthInitialized();
   const session = getSession();
   if (session?.token) {
     config.headers.Authorization = `Bearer ${session.token}`;
